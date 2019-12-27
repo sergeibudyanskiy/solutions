@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-class Command // полиморфный класс
+class Command
 {
     public:
         Command()
