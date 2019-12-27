@@ -105,7 +105,7 @@ int main()
             std::cout << "> ";              
             std::getline(std::cin, str);                            // вводим команду
         }                                                           // определяем тип команды по ключевым словам
-        std::unique_ptr<Command> cmd(determineCommandType(str));    // указатель нужен для реализации принцыпа и предотвращения утечки памяти
+        std::unique_ptr<Command> cmd(determineCommandType(str));    // указатель нужен для реализации предотвращения утечки памяти и принцыпа
         send(cmd);                                                  // (создали команду - отправили - удалили команду)
         str.clear();                                                
     }
