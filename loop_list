@@ -1,0 +1,99 @@
+#include <iostream>
+#include <list>
+template<typename T>
+class List
+{
+public:
+	List() : head(nullptr), size(0)
+	{}
+	~List()
+	{}
+
+	struct Node
+	{
+		Node(T val = T(), Node* nd = nullptr) : next(nd), value(val) {}
+		Node* next;
+		T value;
+	};
+
+	void pushBack(T t, Node* nd = nullptr)
+	{
+		if (head == nullptr)
+		{
+			head = new Node(t, nd);
+		}
+		else
+		{
+			Node* reserv = head;
+			for (int i = 0; i < size - 1; ++i)
+			{
+				reserv = reserv->next;
+			}
+			reserv->next = new Node(t, nd);
+		}
+		size++;
+	}
+
+	void show() const
+	{
+		Node* reserv = head;
+		while (reserv != nullptr)
+		{
+			std::cout << reserv->value << ' ';
+			reserv = reserv->next;
+		}
+	}
+
+	bool loop()
+	{
+		Node* last = head;
+		for (int i = 0; i < size - 1; ++i)
+		{
+			last = last->next;
+		}
+		
+		Node* reserv = head;
+		for (int i = 0; i < size; ++i)
+		{
+			if (last->next == reserv) return true;
+			else reserv = reserv->next;
+		}
+
+		return false;
+	}
+	
+	Node* operator [](int i) const
+	{
+		Node* reserv = head;
+		if (i < size)
+		{
+			for (int j = 0; j < i; ++j)
+			{
+				reserv = reserv->next;
+			}
+		}
+		return reserv;
+	}
+private:
+
+	int size;
+	Node* head;
+};
+
+int main()
+{
+	std::list<int> a;
+	
+	List<int> l;
+	l.pushBack(1);
+	l.pushBack(2);
+	l.pushBack(3, l[1]);
+	l.pushBack(4);
+	l.pushBack(5);
+	l.pushBack(6);
+	l.pushBack(7);
+	l.pushBack(2000, l[2]);
+	
+
+	std::cout <<l.loop();
+}
