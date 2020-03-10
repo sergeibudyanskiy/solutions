@@ -1,0 +1,212 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <iterator>
+#include <stack>
+#include "String.h"
+
+struct Skobka
+{
+	bool is_open;
+	bool is_close;
+	Skobka(bool o = false, bool c = false) : is_close(c), is_open(o){}
+};
+
+int check(const std::string& s)
+{
+	std::vector<Skobka> skobki;
+	for (int i = 0; i < s.size(); ++i)
+	{
+		if (s[i] == '(')
+		{
+			skobki.push_back(Skobka(1));
+		}
+		if (s[i] == ')')
+		{
+			bool yes = false;
+			for (int j = skobki.size() - 1; j >= 0; --j)
+			{
+				if (!skobki[j].is_close)
+				{
+					yes = true;
+					skobki[j].is_close = true;
+					break;
+				}
+			}
+			if (!yes)
+			{
+				skobki.push_back(Skobka(0,1));
+			}
+		}
+	}
+
+	int max = 0;
+	int temp = 0;
+	for (const auto& s : skobki)
+	{
+		if (s.is_close && s.is_open)
+		{
+			temp += 2;
+		}
+		else
+		{
+			temp = 0;
+		}
+		max = temp > max ? temp : max;
+	}
+	
+	return max;
+}
+
+struct ListNode {
+	int val;
+	ListNode* next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
+{
+	ListNode* result = nullptr;
+	int temp = 0;
+	ListNode* result_head = nullptr;
+	bool once = true;
+	while (l1 != NULL || l2 != NULL)
+	{
+		if (l1 != NULL && l2 != NULL)
+		{
+			if ((l1->val + l2->val + temp) > 9)
+			{
+				result = new ListNode((l1->val + l2->val + temp) % 10);
+				temp = 1;
+			}
+			else
+			{
+				result = new ListNode(l1->val + l2->val + temp);
+				temp = 0;
+			}
+		}
+		else if (l1 != NULL && l2 == NULL)
+		{
+			if ((l1->val + temp) > 9)
+			{
+				result = new ListNode((l1->val + temp) % 10);
+				temp = 1;
+			}
+			else
+			{
+				result = new ListNode(l1->val + temp);
+				temp = 0;
+			}
+		}
+		else
+		{
+			if ((l2->val + temp) > 9)
+			{
+				result = new ListNode((l2->val + temp) % 10);
+				temp = 1;
+			}
+			else
+			{
+				result = new ListNode(l2->val + temp);
+				temp = 0;
+			}
+		}
+		if (once)
+		{
+			result_head = result;
+			once = false;
+		}
+		result = result->next;
+		l1 = l1->next;
+		l2 = l2->next;
+	}
+	return result_head;
+}
+
+
+
+int main()
+{
+	//std::vector<String> names = { {"Sergei" }, {"Sergei"}, {"Bikolas"}, {"Bikhlas"}, {"Fikolasssss"} };
+	////std::String names_s = "absd";
+	//std::vector<std::string> names1 = { {"Sergei" }, {"Sergei"}, {"Bikolas"}, {"Bikhlas"}, {"Fikolasssss"} };
+	//std::sort(names.begin(), names.end());
+	//std::sort(names1.begin(), names1.end());
+	////names.erase(names.begin());
+	//names.erase(std::unique(names.begin(), names.end()), names.end());
+	//names1.erase(std::unique(names1.begin(), names1.end()), names1.end());
+	//std::cout << *std::max_element(names.begin(), names.end())<<std::endl;
+	//std::cout<<*std::max_element(names1.begin(), names1.end())<<std::endl;
+
+	//for (const auto& n : names)
+	//{
+	//	std::cout << n << ' ';
+	//}
+
+	//std::cout << std::endl;
+
+	//for (const auto& n : names1)
+	//{
+	//	std::cout << n << ' ';
+	//}
+	
+	//std::cout << *std::search(names.begin(), names.end(), names_s.begin(), names_s.end());
+
+
+	//std::string str = ")(()";
+	//std::cout << check(str);
+
+
+
+
+	int a[3] = { 1,2,3 };
+	
+	ListNode* l1 = nullptr;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (l1 == nullptr)
+		{
+			l1 = new ListNode(a[i]);
+		}
+		else
+		{
+			ListNode* head = l1;
+			while (head->next != NULL)
+			{
+				head = head->next;
+			}
+			head->next = new ListNode(a[i]);
+		}
+	}
+
+	ListNode* l2 = nullptr;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (l2 == nullptr)
+		{
+			l2 = new ListNode(a[i]);
+		}
+		else
+		{
+			ListNode* head = l2;
+			while (head->next != NULL)
+			{
+				head = head->next;
+			}
+			head->next = new ListNode(a[i]);
+		}
+	}
+	
+
+	ListNode* l3 = addTwoNumbers(l1, l2);
+
+	while (l3 != nullptr)
+	{
+		std::cout << l3->val;
+		l3 = l3->next;
+	}
+	
+	return 0;
+}
